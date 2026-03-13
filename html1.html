@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Book Shire</title>
+
+<style>
+body{
+font-family:Arial;
+background:#1e1e2f;
+color:white;
+text-align:center;
+}
+
+.container{
+width:70%;
+margin:auto;
+margin-top:30px;
+}
+
+.story{
+background:white;
+color:black;
+padding:20px;
+margin:20px;
+border-radius:10px;
+}
+
+button{
+padding:10px 20px;
+background:#ff7b00;
+border:none;
+color:white;
+cursor:pointer;
+border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>StoryHub</h1>
+
+<a href="write.html">
+<button>Write a Story</button>
+</a>
+
+<div class="container" id="stories"></div>
+
+<script>
+
+function loadStories(){
+
+let stories = JSON.parse(localStorage.getItem("stories")) || [];
+let container = document.getElementById("stories");
+
+container.innerHTML="";
+
+stories.forEach((story,index)=>{
+
+container.innerHTML+=`
+
+<div class="story">
+<h2>${story.title}</h2>
+<p>${story.content.substring(0,120)}...</p>
+
+<button onclick="readStory(${index})">Read</button>
+<button onclick="likeStory(${index})">❤️ ${story.likes}</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+function likeStory(index){
+
+let stories = JSON.parse(localStorage.getItem("stories"));
+stories[index].likes++;
+
+localStorage.setItem("stories",JSON.stringify(stories));
+loadStories();
+
+}
+
+function readStory(index){
+
+localStorage.setItem("currentStory",index);
+window.location.href="read.html";
+
+}
+
+loadStories();
+
+</script>
+
+</body>
+</html>
+
