@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Read Story</title>
+
+<style>
+body{
+font-family:Arial;
+background:#ffffff;
+text-align:center;
+}
+
+.container{
+width:60%;
+margin:auto;
+margin-top:30px;
+}
+
+.comment{
+background:#f4f4f4;
+padding:10px;
+margin:10px;
+border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1 id="title"></h1>
+
+<p id="content"></p>
+
+<h3>Comments</h3>
+
+<div id="comments"></div>
+
+<input id="commentInput" placeholder="Write comment">
+<button onclick="addComment()">Post</button>
+
+<br><br>
+
+<a href="index.html">Back</a>
+
+</div>
+
+<script>
+
+let stories = JSON.parse(localStorage.getItem("stories"));
+let index = localStorage.getItem("currentStory");
+
+let story = stories[index];
+
+document.getElementById("title").innerText = story.title;
+document.getElementById("content").innerText = story.content;
+
+function loadComments(){
+
+let container=document.getElementById("comments");
+container.innerHTML="";
+
+story.comments.forEach(c=>{
+container.innerHTML+=`<div class="comment">${c}</div>`;
+});
+
+}
+
+function addComment(){
+
+let text=document.getElementById("commentInput").value;
+
+story.comments.push(text);
+
+stories[index]=story;
+
+localStorage.setItem("stories",JSON.stringify(stories));
+
+document.getElementById("commentInput").value="";
+
+loadComments();
+
+}
+
+loadComments();
+
+</script>
+
+</body>
+</html>
